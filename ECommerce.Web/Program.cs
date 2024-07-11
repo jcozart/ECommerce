@@ -1,3 +1,9 @@
+using ECommerce.Data.Interfaces;
+using ECommerce.Data.Repositories;
+using ECommerce.Data;
+using ECommerce.Web.Services;
+using Microsoft.EntityFrameworkCore;
+
 namespace ECommerce.Web
 {
     public class Program
@@ -5,6 +11,12 @@ namespace ECommerce.Web
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddDbContext<ECommerceDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped<IProductService, ProductService>();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
